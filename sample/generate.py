@@ -23,13 +23,14 @@ def main():
     args = generate_args()
     fixseed(args.seed)
     out_path = args.output_dir
-    name = os.path.basename(os.path.dirname(args.model_path))
+    name = os.path.basename(os.path.dirname(args.model_path))  #./save/humanml_trans_enc_512/model000200000.pt
     niter = os.path.basename(args.model_path).replace('model', '').replace('.pt', '')
     max_frames = 196 if args.dataset in ['kit', 'humanml'] else 60
     fps = 12.5 if args.dataset == 'kit' else 20
     n_frames = min(max_frames, int(args.motion_length*fps))
     is_using_data = not any([args.input_text, args.text_prompt, args.action_file, args.action_name])
     dist_util.setup_dist(args.device)
+    # 创建输出文件夹
     if out_path == '':
         out_path = os.path.join(os.path.dirname(args.model_path),
                                 'samples_{}_{}_seed{}'.format(name, niter, args.seed))
@@ -113,7 +114,7 @@ def main():
 
         sample = sample_fn(
             model,
-            (args.batch_size, model.njoints, model.nfeats, n_frames),
+            (args.batch_size, model.njoints, model.nfeats, n_frames),  # 1,263, 1,  196
             clip_denoised=False,
             model_kwargs=model_kwargs,
             skip_timesteps=0,  # 0 is the default value - i.e. don't skip any step

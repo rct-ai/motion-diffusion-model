@@ -214,9 +214,9 @@ def train_args():
 def generate_args():
     parser = ArgumentParser()
     # args specified by the user: (all other will be loaded from the model)
-    add_base_options(parser)
-    add_sampling_options(parser)
-    add_generate_options(parser)
+    add_base_options(parser)  # cuda ,seed ,batch_size, device_id
+    add_sampling_options(parser)  # model_path, output_dir, num_samples, num_repetitions, guidance_param
+    add_generate_options(parser) # motion_length, input_text, action_file, text_prompt, action_name
     return parse_and_load_from_model(parser)
 
 
